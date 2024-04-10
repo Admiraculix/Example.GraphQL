@@ -1,4 +1,4 @@
-﻿namespace GraphQL.API.Schema.Types;
+﻿namespace GraphQL.API.Schema.Instuctors.InstructorQueries;
 
 public class InstructorType
 {

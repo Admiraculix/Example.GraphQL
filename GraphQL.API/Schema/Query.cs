@@ -1,6 +1,9 @@
 ﻿using System;
 using Bogus;
-using GraphQL.API.Schema.Types;
+using GraphQL.API.Schema.Courses.CourseQueries;
+using GraphQL.API.Schema.Enums;
+using GraphQL.API.Schema.Instuctors.InstructorQueries;
+using GraphQL.API.Schema.Students.StudentQueries;
 
 namespace GraphQL.API.Schema;
 
@@ -19,10 +22,10 @@ public class Query
             .RuleFor(c => c.Salary, f => f.Random.Double(0, 100000));
 
         _studentFaker = new Faker<StudentType>()
-             .RuleFor(c => c.Id, f => Guid.NewGuid())
-             .RuleFor(c => c.FirstName, f => f.Name.FirstName())
-             .RuleFor(c => c.LastName, f => f.Name.LastName())
-             .RuleFor(c => c.GPA, f => f.Random.Double(1, 4));
+            .RuleFor(c => c.Id, f => Guid.NewGuid())
+            .RuleFor(c => c.FirstName, f => f.Name.FirstName())
+            .RuleFor(c => c.LastName, f => f.Name.LastName())
+            .RuleFor(c => c.GPA, f => f.Random.Double(1, 4));
 
         _courseFaker = new Faker<CourseType>()
             .RuleFor(c => c.Id, f => Guid.NewGuid())
