@@ -1,4 +1,5 @@
 ﻿using GraphQL.API.Schema.Courses.CourseMutations;
+using HotChocolate.Subscriptions;
 
 namespace GraphQL.API.Schema;
 
@@ -11,9 +12,9 @@ public class Mutation
         _courses = new List<CourseResult>();
     }
 
-    public CourseResult CreateCourse(CourseInputType courseInput)
+    public async Task<CourseResult> CreateCourseAsync(CourseInputType courseInput, [Service] ITopicEventSender sender)
     {
-        CourseResult courseType = new CourseResult()
+        CourseResult courseResult = new CourseResult()
         {
             Id = Guid.NewGuid(),
             Name = courseInput.Name,
@@ -21,12 +22,13 @@ public class Mutation
             InstructorId = courseInput.InstructorId
         };
 
-        _courses.Add(courseType);
+        _courses.Add(courseResult);
+        await sender.SendAsync(nameof(Subscription.CourseCreated), courseResult);
 
-        return courseType;
+        return courseResult;
     }
 
-    public CourseResult UpdateCourse(Guid id, CourseInputType courseInput)
+    public async Task<CourseResult> UpdateCourseAsync(Guid id, CourseInputType courseInput, [Service] ITopicEventSender sender)
     {
         CourseResult? course = _courses.Find(c => c.Id == id)
             ?? throw new GraphQLException(
@@ -35,6 +37,9 @@ public class Mutation
         course.Name = courseInput.Name;
         course.Subject = courseInput.Subject;
         course.InstructorId = courseInput.InstructorId;
+
+        string updateCourseTopic = $"{course.Id}_{nameof(Subscription.CourseUpdatedAsync)}";
+        await sender.SendAsync(updateCourseTopic, course);
 
         return course;
     }

@@ -1,5 +1,4 @@
-﻿using System;
-using Bogus;
+﻿using Bogus;
 using GraphQL.API.Schema.Courses.CourseQueries;
 using GraphQL.API.Schema.Enums;
 using GraphQL.API.Schema.Instuctors.InstructorQueries;

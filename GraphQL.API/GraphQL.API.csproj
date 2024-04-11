@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Schema\Courses\CourseSubscriptions\" />
     <Folder Include="Schema\Instuctors\InstructorMutations\" />
     <Folder Include="Schema\Students\StudentMutations\" />
   </ItemGroup>
