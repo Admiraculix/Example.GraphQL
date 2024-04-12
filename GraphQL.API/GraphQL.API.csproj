@@ -16,12 +16,20 @@
   <ItemGroup>
     <PackageReference Include="Bogus" Version="35.5.0" />
     <PackageReference Include="HotChocolate.AspNetCore" Version="13.9.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Schema\Courses\CourseSubscriptions\" />
     <Folder Include="Schema\Instuctors\InstructorMutations\" />
     <Folder Include="Schema\Students\StudentMutations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GraphQL.Persistence.Sqlite\GraphQL.Persistence.Sqlite.csproj" />
   </ItemGroup>
 
 </Project>

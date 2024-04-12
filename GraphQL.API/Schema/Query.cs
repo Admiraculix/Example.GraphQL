@@ -29,7 +29,7 @@ public class Query
         _courseFaker = new Faker<CourseType>()
             .RuleFor(c => c.Id, f => Guid.NewGuid())
             .RuleFor(c => c.Name, f => f.Name.JobTitle())
-            .RuleFor(c => c.Subject, f => f.PickRandom<Subject>())
+            .RuleFor(c => c.Subject, f => f.PickRandom<SubjectType>())
             .RuleFor(c => c.Instructor, _ => _instructorFaker.Generate())
             .RuleFor(c => c.Students, _ => _studentFaker.Generate(3));
     }
