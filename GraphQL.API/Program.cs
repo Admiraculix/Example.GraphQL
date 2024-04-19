@@ -42,14 +42,18 @@ builder.Services
         o.UseDefaultErrorMapper();
     });
 
+var fileConfiguration = builder.Configuration.GetSection("Firebase:ConfigFilePath").Value;
+var userEmail = builder.Configuration.GetSection("Firebase:UserEmail").Value;
+var userPolicy = builder.Configuration.GetSection("Firebase:Policy").Value;
+
 builder.Services.AddSingleton(FirebaseApp.Create(new AppOptions()
 {
-    Credential = GoogleCredential.FromFile(builder.Configuration.GetValue<string>("FIREBASE_CONFIG_PATH"))
-}));
+    Credential = GoogleCredential.FromFile(fileConfiguration)
+})); ;
 builder.Services.AddFirebaseAuthentication();
 builder.Services.AddAuthorization(
-    o => o.AddPolicy("IsAdmin",
-        p => p.RequireClaim(FirebaseUserClaimType.EMAIL, "gbozh.work@gmail.com")));
+    o => o.AddPolicy(userPolicy,
+        p => p.RequireClaim(FirebaseUserClaimType.EMAIL, userEmail)));
 
 builder.Services.AddScoped<CoursesRepository>();
 builder.Services.AddScoped<InstructorsRepository>();
