@@ -1,50 +1,44 @@
-﻿using Bogus;
-using GraphQL.API.Schema.Courses.CourseQueries;
+﻿using GraphQL.API.Schema.Courses.CourseQueries;
 using GraphQL.API.Schema.Enums;
 using GraphQL.API.Schema.Instuctors.InstructorQueries;
-using GraphQL.API.Schema.Students.StudentQueries;
+using GraphQL.Persistence.MSSql;
+using HotChocolate.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace GraphQL.API.Schema;
 
 public class Query
 {
-    private readonly Faker<InstructorType> _instructorFaker;
-    private readonly Faker<StudentType> _studentFaker;
-    private readonly Faker<CourseType> _courseFaker;
-
-    public Query()
+    public async Task<IEnumerable<ISearchResultType>> Search(string term, SchoolDbContext context)
     {
-        _instructorFaker = new Faker<InstructorType>()
-            .RuleFor(c => c.Id, f => Guid.NewGuid())
-            .RuleFor(c => c.FirstName, f => f.Name.FirstName())
-            .RuleFor(c => c.LastName, f => f.Name.LastName())
-            .RuleFor(c => c.Salary, f => f.Random.Double(0, 100000));
+        IEnumerable<CourseType> courses = await context.Courses
+            .Where(c => c.Name.Contains(term))
+            .Select(c => new CourseType()
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Subject = (SubjectType)c.Subject,
+                InstructorId = c.InstructorId,
+                CreatorId = c.CreatorId
+            })
+            .ToListAsync();
 
-        _studentFaker = new Faker<StudentType>()
-            .RuleFor(c => c.Id, f => Guid.NewGuid())
-            .RuleFor(c => c.FirstName, f => f.Name.FirstName())
-            .RuleFor(c => c.LastName, f => f.Name.LastName())
-            .RuleFor(c => c.GPA, f => f.Random.Double(1, 4));
+        IEnumerable<InstructorType> instructors = await context.Instructors
+            .Where(i => i.FirstName.Contains(term) || i.LastName.Contains(term))
+            .Select(i => new InstructorType()
+            {
+                Id = i.Id,
+                FirstName = i.FirstName,
+                LastName = i.LastName,
+                Salary = i.Salary,
+            })
+            .ToListAsync();
 
-        _courseFaker = new Faker<CourseType>()
-            .RuleFor(c => c.Id, f => Guid.NewGuid())
-            .RuleFor(c => c.Name, f => f.Name.JobTitle())
-            .RuleFor(c => c.Subject, f => f.PickRandom<SubjectType>())
-            .RuleFor(c => c.Instructor, _ => _instructorFaker.Generate())
-            .RuleFor(c => c.Students, _ => _studentFaker.Generate(3));
-    }
+        var res = new List<ISearchResultType>()
+            .Concat(courses)
+            .Concat(instructors);
 
-    public IEnumerable<CourseType> GetCourses()
-    {
-        return _courseFaker.Generate(5);
-    }
-
-    public async Task<CourseType> GetCourseByIdAsync(Guid id)
-    {
-        CourseType course = _courseFaker.Generate();
-        course.Id = id;
-
-        return await Task.Run(() => course);
+        return res;
     }
 
     [GraphQLDeprecated("This query is deprecated!")]

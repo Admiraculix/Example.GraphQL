@@ -1,4 +1,5 @@
 ﻿using GraphQL.API.Schema.Courses.CourseMutations;
+using GraphQL.API.Schema.Instuctors.InstructorMutations;
 using HotChocolate.Execution;
 using HotChocolate.Subscriptions;
 
@@ -18,4 +19,7 @@ public class Subscription
 
         return receiver.SubscribeAsync<CourseResult>(topicName);
     }
+
+    [Subscribe]
+    public InstructorResult InstructorCreated([EventMessage] InstructorResult instructor) => instructor;
 }

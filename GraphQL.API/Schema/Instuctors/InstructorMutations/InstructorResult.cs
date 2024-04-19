@@ -1,6 +1,6 @@
-﻿namespace GraphQL.API.Schema.Instuctors.InstructorQueries;
+﻿namespace GraphQL.API.Schema.Instuctors.InstructorMutations;
 
-public class InstructorType : ISearchResultType
+public class InstructorResult
 {
     public Guid Id { get; set; }
     public string FirstName { get; set; }

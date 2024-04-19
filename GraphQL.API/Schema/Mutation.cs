@@ -12,7 +12,7 @@ public class Mutation
         _courses = new List<CourseResult>();
     }
 
-    public async Task<CourseResult> CreateCourseAsync(CourseInputType courseInput, [Service] ITopicEventSender sender)
+    public async Task<CourseResult> CreateCourseAsync(CourseTypeInput courseInput, [Service] ITopicEventSender sender)
     {
         CourseResult courseResult = new CourseResult()
         {
@@ -28,7 +28,7 @@ public class Mutation
         return courseResult;
     }
 
-    public async Task<CourseResult> UpdateCourseAsync(Guid id, CourseInputType courseInput, [Service] ITopicEventSender sender)
+    public async Task<CourseResult> UpdateCourseAsync(Guid id, CourseTypeInput courseInput, [Service] ITopicEventSender sender)
     {
         CourseResult? course = _courses.Find(c => c.Id == id)
             ?? throw new GraphQLException(

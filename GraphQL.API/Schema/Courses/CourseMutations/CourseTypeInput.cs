@@ -2,7 +2,7 @@
 
 namespace GraphQL.API.Schema.Courses.CourseMutations;
 
-public class CourseInputType
+public class CourseTypeInput
 {
     public string Name { get; set; }
     public SubjectType Subject { get; set; }

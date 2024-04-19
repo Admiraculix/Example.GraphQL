@@ -14,8 +14,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AppAny.HotChocolate.FluentValidation" Version="0.11.1" />
     <PackageReference Include="Bogus" Version="35.5.0" />
+    <PackageReference Include="FirebaseAdminAuthentication.DependencyInjection" Version="1.1.0" />
+    <PackageReference Include="FluentValidation" Version="11.9.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="HotChocolate.AspNetCore" Version="13.9.0" />
+    <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="13.9.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -24,12 +29,12 @@
 
   <ItemGroup>
     <Folder Include="Schema\Courses\CourseSubscriptions\" />
-    <Folder Include="Schema\Instuctors\InstructorMutations\" />
     <Folder Include="Schema\Students\StudentMutations\" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GraphQL.Persistence.Sqlite\GraphQL.Persistence.Sqlite.csproj" />
+    <ProjectReference Include="..\GraphQL.Persistence.MSSql\GraphQL.Persistence.MSSql.csproj" />
+    <ProjectReference Include="..\GraphQL.Persistence.Sqlite\GraphQL.Persistence.MSSql.csproj" />
   </ItemGroup>
 
 </Project>
